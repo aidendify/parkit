@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app.py .
 COPY helpers.py .
+COPY helpers_ops.py .
 COPY sample-hvac-par.csv .
 COPY sample-hvac-par.yaml .
 COPY sample-jobs.csv .
