@@ -1,0 +1,13 @@
+sku,name,min,max,on_hand,job_tags
+TXV-3T,3-ton TXV,1,2,0,ac_no_cool|residential_cool
+CAP-45,45µF capacitor,2,4,1,ac_no_cool|capacitor
+CAP-5,5µF capacitor,2,4,2,ac_no_cool|capacitor
+CONT-30,30A contactor,1,2,0,ac_no_cool
+FILTER-16,16x25x1 filter,4,8,4,always|truck_base
+WH-ELEMENT,Water heater element,1,2,0,water_heater
+GFCI-15,15A GFCI outlet,2,4,1,electrical_gfci
+THERM-WIFI,Wi-Fi thermostat,1,2,1,thermostat
+R410A-CAN,R-410A recharge can,1,3,0,refrigerant|ac_no_cool
+IGNITOR,Hot surface ignitor,1,2,0,furnace_no_heat
+P-TRAP,P-trap kit,1,2,1,plumbing_drain
+DUCT-TAPE,Foil duct tape,1,2,1,truck_base

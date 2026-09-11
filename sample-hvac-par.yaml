@@ -1,0 +1,55 @@
+skus:
+  - sku: "TXV-3T"
+    name: "3-ton TXV"
+    min: 1
+    max: 2
+    on_hand: 0
+    job_tags: ["ac_no_cool", "residential_cool"]
+  - sku: "CAP-45"
+    name: "45µF capacitor"
+    min: 2
+    max: 4
+    on_hand: 1
+    job_tags: ["ac_no_cool", "capacitor"]
+  - sku: "CAP-5"
+    name: "5µF capacitor"
+    min: 2
+    max: 4
+    on_hand: 2
+    job_tags: ["ac_no_cool", "capacitor"]
+  - sku: "CONT-30"
+    name: "30A contactor"
+    min: 1
+    max: 2
+    on_hand: 0
+    job_tags: ["ac_no_cool"]
+  - sku: "FILTER-16"
+    name: "16x25x1 filter"
+    min: 4
+    max: 8
+    on_hand: 4
+    job_tags: ["always", "truck_base"]
+  - sku: "WH-ELEMENT"
+    name: "Water heater element"
+    min: 1
+    max: 2
+    on_hand: 0
+    job_tags: ["water_heater"]
+  - sku: "GFCI-15"
+    name: "15A GFCI outlet"
+    min: 2
+    max: 4
+    on_hand: 1
+    job_tags: ["electrical_gfci"]
+  - sku: "R410A-CAN"
+    name: "R-410A recharge can"
+    min: 1
+    max: 3
+    on_hand: 0
+    job_tags: ["refrigerant", "ac_no_cool"]
+  - sku: "DUCT-TAPE"
+    name: "Foil duct tape"
+    min: 1
+    max: 2
+    on_hand: 1
+    job_tags: ["truck_base"]

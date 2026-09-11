@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.py[cod]
+*.db
+*.sqlite
+.venv/
+venv/
+data/
+.push_*
+.mcp_*
+*.db-wal
+*.db-shm
