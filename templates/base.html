@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ParKit{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="{{ url_for('index') }}">ParKit</a>
+    <p class="tagline">Tomorrow's jobs × truck par → restock gaps</p>
+    {% if not public and logged_in %}
+    <nav class="top-nav">
+      <a href="{{ url_for('index') }}">Home</a>
+      <a href="{{ url_for('trucks') }}">Trucks</a>
+      <a href="{{ url_for('jobs_import') }}">Jobs</a>
+      {% if owner_locked %}
+      <a href="{{ url_for('logout') }}">Log out</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+  </header>
+
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="flash flash-{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  {% if marketing_url %}
+  <footer class="site-footer">
+    <a href="{{ marketing_url }}">Powered by ParKit</a>
+  </footer>
+  {% endif %}
+
+  <script>
+    function copyText(text, btn) {
+      navigator.clipboard.writeText(text).then(function () {
+        var old = btn.textContent;
+        btn.textContent = "Copied";
+        setTimeout(function () { btn.textContent = old; }, 1500);
+      });
+    }
+    function copyFrom(elId, btn) {
+      var el = document.getElementById(elId);
+      if (!el) return;
+      copyText(el.value, btn);
+    }
+  </script>
+</body>
+</html>

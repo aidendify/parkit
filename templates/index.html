@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Home — ParKit{% endblock %}
+{% block content %}
+<section class="page-head">
+  <h1>{{ business_name }}</h1>
+  <p class="lede">Match tomorrow's schedule to each truck's par sheet and restock gaps before first dispatch.</p>
+</section>
+
+<section class="card">
+  <h2>Build restock for tomorrow</h2>
+  <p class="hint">{{ pending_jobs }} job(s) on file for {{ for_date }}
+    {% if trucks|length == 0 %} · <a href="{{ url_for('trucks') }}">create a truck</a> first{% endif %}
+    · <a href="{{ url_for('jobs_import') }}">import jobs</a>
+  </p>
+  <form method="post" action="{{ url_for('runs_build') }}" class="stack">
+    <label>Date
+      <input type="date" name="for_date" value="{{ for_date }}">
+    </label>
+    {% if runner_channel %}
+    <label class="check-row">
+      <input type="checkbox" name="notify" value="1" checked>
+      Notify parts runner (email/SMS if configured)
+    </label>
+    {% endif %}
+    <div class="btn-row">
+      <button class="btn" type="submit">Build restock list</button>
+      <a class="btn btn-quiet" href="{{ url_for('jobs_import') }}">Import jobs</a>
+      <a class="btn btn-quiet" href="{{ url_for('trucks') }}">Trucks &amp; par</a>
+    </div>
+  </form>
+</section>
+
+<section class="card">
+  <h2>Recent runs</h2>
+  {% if runs %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Date</th><th>Built</th><th>Gaps</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for r in runs %}
+        <tr>
+          <td><a href="{{ url_for('run_detail', run_id=r.id) }}">{{ r.for_date }}</a></td>
+          <td>{{ r.created_at }}</td>
+          <td>{{ r.line_count }} line(s)</td>
+          <td><a href="{{ url_for('run_detail', run_id=r.id) }}">Open</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty">No runs yet. Create a truck, import the sample HVAC par, paste tomorrow's jobs, then Build.</p>
+  {% endif %}
+</section>
+{% endblock %}

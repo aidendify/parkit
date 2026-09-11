@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Restock {{ run.for_date }} — ParKit{% endblock %}
+{% block content %}
+<p class="crumb no-print"><a href="{{ url_for('index') }}">Home</a> / Run #{{ run.id }}</p>
+<section class="page-head">
+  <h1>Restock for {{ run.for_date }}</h1>
+  <p class="lede">Built {{ run.created_at }} · print-friendly checklists below</p>
+</section>
+
+<div class="btn-row no-print">
+  <a class="btn" href="{{ url_for('run_csv', run_id=run.id) }}">Export CSV</a>
+  <button class="btn btn-quiet" type="button" onclick="window.print()">Print</button>
+  <form class="inline-form" method="post" action="{{ url_for('run_notify', run_id=run.id) }}">
+    <button class="btn btn-quiet" type="submit">Notify runner</button>
+  </form>
+</div>
+
+{% for block in checklists %}
+<section class="card checklist-block">
+  <h2>{{ block.truck.name }}</h2>
+  {% if block.lines %}
+  <div class="table-wrap">
+    <table class="gap-table">
+      <thead>
+        <tr>
+          <th>SKU</th><th>Name</th><th>On hand</th><th>Min</th><th>Qty to pull</th><th>Why</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ln in block.lines %}
+        <tr>
+          <td><code>{{ ln.sku }}</code></td>
+          <td>{{ ln.name }}</td>
+          <td>{{ ln.on_hand }}</td>
+          <td>{{ ln.min_qty }}</td>
+          <td class="qty">{{ ln.qty_to_pull }}</td>
+          <td>{{ ln.reason_tags }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="covered">Truck {{ block.truck.name }} is covered for tomorrow.</p>
+  {% endif %}
+  <label class="no-print">Copy checklist
+    <textarea class="copy-box" id="copy-{{ block.truck.id }}" readonly>{{ block.text }}</textarea>
+  </label>
+  <div class="btn-row no-print">
+    <button class="btn btn-quiet" type="button" onclick="copyFrom('copy-{{ block.truck.id }}', this)">Copy</button>
+  </div>
+</section>
+{% else %}
+<section class="card">
+  <p class="empty">No trucks were attached to this run.</p>
+</section>
+{% endfor %}
+
+{% if jobs %}
+<section class="card no-print">
+  <h2>Jobs in this run</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Truck</th><th>Title</th><th>Tag</th><th>Ref</th></tr></thead>
+      <tbody>
+        {% for j in jobs %}
+        <tr>
+          <td>{{ j.truck_name or "—" }}</td>
+          <td>{{ j.title }}</td>
+          <td><code>{{ j.job_tag or "—" }}</code></td>
+          <td>{{ j.job_ref or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

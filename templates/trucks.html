@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Trucks — ParKit{% endblock %}
+{% block content %}
+<section class="page-head">
+  <h1>Trucks</h1>
+  <p class="lede">Start with one truck's par sheet. You can add more anytime — no license lock.</p>
+</section>
+
+<section class="card">
+  <h2>Create truck</h2>
+  <form method="post" class="stack">
+    <label>Name
+      <input type="text" name="name" placeholder="Truck 1" required>
+    </label>
+    <label>Notes (optional)
+      <input type="text" name="notes" placeholder="Van / route">
+    </label>
+    <button class="btn" type="submit">Create truck</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>Your trucks</h2>
+  {% if trucks %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Name</th><th>Par SKUs</th><th>Notes</th><th></th></tr></thead>
+      <tbody>
+        {% for t in trucks %}
+        <tr>
+          <td>{{ t.name }}</td>
+          <td>{{ t.par_count }}</td>
+          <td>{{ t.notes or "—" }}</td>
+          <td><a href="{{ url_for('truck_par', truck_id=t.id) }}">Par sheet</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty">No trucks yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Import jobs — ParKit{% endblock %}
+{% block content %}
+<section class="page-head">
+  <h1>Import tomorrow's jobs</h1>
+  <p class="lede">Paste multiline text or upload CSV. Unparsed truck names fall back to your first truck.</p>
+</section>
+
+<section class="card">
+  <h2>Paste or CSV</h2>
+  <div class="hint-box">
+    <strong>Pipe format</strong> (one job per line): <code>truck|title|tag</code>
+    — optional 4th/5th fields <code>job_ref|date</code>.<br>
+    Example: <code>Truck 1|Carrier no-cool — Smith|ac_no_cool</code><br>
+    Or free text with truck omitted: <code>Carrier no-cool — Smith</code> (assigned to default truck).<br>
+    <strong>CSV columns:</strong> <code>truck,title,tag,job_ref,date</code>
+  </div>
+  {% if trucks %}
+  <p class="hint">Known trucks: {% for t in trucks %}<code>{{ t.name }}</code>{% if not loop.last %}, {% endif %}{% endfor %}</p>
+  {% else %}
+  <p class="flash flash-error">Create a truck before importing jobs.</p>
+  {% endif %}
+  <form method="post" enctype="multipart/form-data" class="stack">
+    <label>Scheduled date (default for lines without a date)
+      <input type="date" name="date" value="{{ default_date }}">
+    </label>
+    <label>Paste jobs
+      <textarea name="jobs_text" rows="10" placeholder="Truck 1|Carrier no-cool — Smith|ac_no_cool">{{ form_text }}</textarea>
+    </label>
+    <label>Or upload CSV
+      <input type="file" name="jobs_file" accept=".csv,.txt">
+    </label>
+    <button class="btn" type="submit" {% if not trucks %}disabled{% endif %}>Import jobs</button>
+  </form>
+</section>
+{% endblock %}

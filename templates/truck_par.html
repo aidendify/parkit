@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}{{ truck.name }} par — ParKit{% endblock %}
+{% block content %}
+<p class="crumb"><a href="{{ url_for('trucks') }}">Trucks</a> / {{ truck.name }}</p>
+<section class="page-head">
+  <h1>{{ truck.name }} — par sheet</h1>
+  <p class="lede">Import YAML or CSV, then edit on-hand after a physical count.</p>
+</section>
+
+<section class="card">
+  <h2>Edit truck</h2>
+  <form method="post" class="stack">
+    <input type="hidden" name="action" value="edit_truck">
+    <label>Name
+      <input type="text" name="name" value="{{ truck.name }}" required>
+    </label>
+    <label>Notes
+      <input type="text" name="notes" value="{{ truck.notes or '' }}">
+    </label>
+    <button class="btn btn-quiet" type="submit">Save truck</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>Import par (YAML or CSV)</h2>
+  <div class="hint-box">
+    CSV columns: <code>sku,name,min,max,on_hand,job_tags</code>
+    (job_tags pipe or semicolon separated). Or YAML with a <code>skus:</code> list.
+    Sample: <code>sample-hvac-par.csv</code> / <code>sample-hvac-par.yaml</code> in the repo.
+  </div>
+  <form method="post" enctype="multipart/form-data" class="stack">
+    <input type="hidden" name="action" value="import">
+    <label>Upload file
+      <input type="file" name="par_file" accept=".csv,.yaml,.yml,.txt">
+    </label>
+    <label>Or paste
+      <textarea name="par_text" rows="8" placeholder="sku,name,min,max,on_hand,job_tags"></textarea>
+    </label>
+    <button class="btn" type="submit">Import par</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>On-hand ({{ items|length }} SKUs)</h2>
+  {% if items %}
+  <form method="post">
+    <input type="hidden" name="action" value="update_on_hand">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>SKU</th><th>Name</th><th>Min</th><th>Max</th><th>On hand</th><th>Tags</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for it in items %}
+          <tr {% if it.on_hand < it.min_qty %}style="background:#fff7ed"{% endif %}>
+            <td><code>{{ it.sku }}</code></td>
+            <td>{{ it.name }}</td>
+            <td>{{ it.min_qty }}</td>
+            <td>{{ it.max_qty if it.max_qty is not none else "—" }}</td>
+            <td>
+              <input type="number" name="on_hand_{{ it.id }}" value="{{ it.on_hand }}" min="0" style="width:5rem">
+            </td>
+            <td>{{ it.tags_list|join(", ") }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="btn-row">
+      <button class="btn" type="submit">Save on-hand</button>
+    </div>
+  </form>
+  {% else %}
+  <p class="empty">No par items yet. Import the sample HVAC sheet.</p>
+  {% endif %}
+</section>
+{% endblock %}

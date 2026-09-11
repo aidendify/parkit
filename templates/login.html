@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Log in — ParKit{% endblock %}
+{% block content %}
+<section class="card login-card">
+  <div class="page-head">
+    <h1>Log in</h1>
+    <p class="lede">{{ business_name }}</p>
+  </div>
+  {% if error %}<p class="flash flash-error">{{ error }}</p>{% endif %}
+  <form method="post" class="stack">
+    <input type="hidden" name="next" value="{{ next }}">
+    <label>Password
+      <input type="password" name="password" autofocus required>
+    </label>
+    <button class="btn" type="submit">Log in</button>
+  </form>
+</section>
+{% endblock %}

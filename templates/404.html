@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Not found — ParKit{% endblock %}
+{% block content %}
+<section class="card">
+  <h1>Not found</h1>
+  <p class="lede">That page does not exist.</p>
+  <p><a class="btn" href="{{ url_for('index') }}">Home</a></p>
+</section>
+{% endblock %}
